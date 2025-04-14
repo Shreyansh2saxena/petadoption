@@ -77,7 +77,7 @@ export default function Home() {
               <div className="mt-[95px]">
                 <Link
                   className="px-4 py-3 bg-gray-100 text-black rounded-full w-[170px] hover:bg-white hover:shadow-md"
-                  href="/donate"
+                  to="/donate"
                 >
                   DONATE
                 </Link>
@@ -177,7 +177,7 @@ export default function Home() {
       {/* Featured Image */}
       <div className="w-[80%] m-auto mb-12">
       <img src="https://i.pinimg.com/736x/3c/67/62/3c67627aa25500da403b506a150fb782.jpg" 
-          alt="Gemini Image"
+          alt="Gemini "
           className="w-full h-[350px] object-cover rounded-lg shadow-md"
       />
       

@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <nav className="flex justify-between items-center p-4 bg-green-600 dark:bg-gray-800">
-      <h2 className="text-white text-2xl font-bold">Pet Adoption</h2>
+      <h2 className="text-white text-2xl font-bold">Get Pet</h2>
       <div className="flex items-center space-x-6">
         <Link to="/adopt" className="text-white hover:text-yellow-300 font-semibold">Adopt</Link>
         <Link to="/feed" className="text-white hover:text-yellow-300 font-semibold">Feed</Link>
