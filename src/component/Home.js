@@ -73,7 +73,7 @@ export default function Home() {
               <h1 className="text-5xl font-bold my-4 tracking-wide">
                 You can make a difference in their life
               </h1>
-              <p className="mt-[10px] font-bold text-3xl">Adopt today!</p>
+             
               <div className="mt-[95px]">
                 <Link
                   className="px-4 py-3 bg-gray-100 text-black rounded-full w-[170px] hover:bg-white hover:shadow-md"

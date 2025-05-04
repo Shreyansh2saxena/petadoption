@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Lottie from 'lottie-react';
-import animation from '../assests/Animation - 1744618965062.json'; // Replace with your Lottie JSON file path
+import animation from '../assests/Animation - 1744618965062.json'; 
 
 const Donate = () => {
     const [formData, setFormData] = useState({
