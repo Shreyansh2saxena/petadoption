@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Lottie from "lottie-react";
+import animation from "../assests/Animation - 1744618965062.json";
 
 export default function PostPetPage() {
   const [newPost, setNewPost] = useState({
@@ -10,6 +12,7 @@ export default function PostPetPage() {
     description: "",
   });
   const [imagePreview, setImagePreview] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,18 +43,23 @@ export default function PostPetPage() {
       newPost.breed &&
       newPost.description
     ) {
-      alert("Pet Posted!");
-      setNewPost({
-        name: "",
-        city: "",
-        image: "",
-        age: "",
-        breed: "",
-        description: "",
-      });
-      setImagePreview(null);
+      setIsLoading(true);
+      setTimeout(() => {
+        alert("Pet Posted!");
+        setNewPost({
+          name: "",
+          city: "",
+          image: "",
+          age: "",
+          breed: "",
+          description: "",
+        });
+        setImagePreview(null);
+        setIsLoading(false);
+      }, 1500); // simulate async post
     }
   };
+  
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-10 px-4 flex justify-center items-center transition-colors">
@@ -134,14 +142,26 @@ export default function PostPetPage() {
           </div>
 
           {/* Submit Button */}
-          <div className="mt-6">
-            <button
-              type="submit"
-              className="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
-            >
-              Post Pet
-            </button>
-          </div>
+          <div className="flex justify-center mt-6 text-center">
+  <button
+    type="submit"
+    onClick={handleSubmit}
+    disabled={isLoading}
+    className="relative flex items-center justify-center bg-green-600 text-white rounded-full text-base w-1/2 h-10 disabled:opacity-60"
+  >
+    {isLoading ? (
+      <Lottie
+        animationData={animation}
+        loop
+        autoplay
+        className="w-10 h-10"
+      />
+    ) : (
+      <span className="text-sm">Submit</span>
+    )}
+  </button>
+</div>
+
         </form>
       </div>
     </div>

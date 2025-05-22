@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const initialUser = {
-  name: "John Doe",
+  name: "shreyansh",
   city: "Mumbai",
   bio: "Animal lover 🐾 | Looking to help pets find a home 🏡",
   profilePic:
