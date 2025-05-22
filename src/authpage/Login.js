@@ -2,17 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Lottie from "lottie-react";
 import animation from '../assests/Animation - 1744618965062.json'; // Import your animation file
-
-
-
-const DUMMY_USER = {
-  email: 'shreyansh@gmail.com',
-  password: '123',
-};
-
-const generateFakeJWT = (email) => {
-  return btoa(JSON.stringify({ sub: email, exp: Date.now() + 1000 * 60 * 60 }));
-};
+import axios from 'axios';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -25,22 +15,39 @@ const LoginPage = () => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    const { email, password } = credentials;
-  
-    setTimeout(() => {
-      if (email === DUMMY_USER.email && password === DUMMY_USER.password) {
-        const fakeToken = generateFakeJWT(email);
-        localStorage.setItem('jwtToken', fakeToken);
-        navigate('/');
-      } else {
-        setError('Invalid email or password');
-      }
-      setIsLoading(false);
-    }, 1500); // simulate async validation
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setError('');
+  const { email, password } = credentials;
+
+  try {
+    const response = await axios.post('http://localhost:5000/api/user/login', {
+      email,
+      password
+    });
+
+    if (response.data.success) {
+      const { token, user } = response.data;
+
+      // Save token (if returned)
+      localStorage.setItem('jwtToken', token);
+      localStorage.setItem('userName', user.name); // optional
+
+      navigate('/');
+    } else {
+      setError(response.data.message || 'Login failed');
+    }
+  } catch (error) {
+    if (error.response && error.response.data) {
+      setError(error.response.data.message || 'Login failed');
+    } else {
+      setError('Something went wrong. Please try again.');
+    }
+  } finally {
+    setIsLoading(false);
+  }
+};
   
   return (
 <div className="relative h-[91vh] flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900 bg-cover bg-center bg-no-repeat bg-[url('assests/profilepet.png')] dark:bg-[url('assests/profilepetdark.png')]">

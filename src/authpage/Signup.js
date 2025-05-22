@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Lottie from "lottie-react";
 import animation from '../assests/Animation - 1744618965062.json'; // Import your animation file
-
+import axios from 'axios';
 const generateFakeJWT = (email) => {
   return btoa(JSON.stringify({ sub: email, exp: Date.now() + 1000 * 60 * 60 }));
 };
@@ -48,26 +48,41 @@ const SignupPage = () => {
     return true;
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
-    
-    if (!validateForm()) {
-      return;
-    }
-    
-    setIsLoading(true);
-    const { name, email } = formData;
-  
-    setTimeout(() => {
-      // Simulate user registration
-      const fakeToken = generateFakeJWT(email);
-      localStorage.setItem('jwtToken', fakeToken);
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+
+  if (!validateForm()) return;
+
+  setIsLoading(true);
+  const { name, email, password } = formData;
+
+  // try {
+    // Replace with your actual API endpoint
+    const response = await axios.post('http://localhost:5000/api/user/signup', {
+      name,
+      email,
+      password,
+    });
+
+    if (response.data.success) {
+      // Optional: request a token here if signup also logs in the user
       localStorage.setItem('userName', name);
+      // navigate to homepage
       navigate('/');
-      setIsLoading(false);
-    }, 1500); // simulate async registration
-  };
+    } else {
+      setError(response.data.message || 'Signup failed');
+    }
+  // } catch (error) {
+  //   if (error.response && error.response.data) {
+  //     setError(error.response.data.message);
+  //   } else {
+  //     setError('Something went wrong. Please try again.');
+  //   }
+  // } finally {
+  //   setIsLoading(false);
+  // }
+};
   
   return (
     <div className="relative h-[91vh] flex items-center justify-center p-4 bg-gray-100 dark:bg-gray-900 bg-cover bg-center bg-no-repeat bg-[url('assests/profilepet.png')] dark:bg-[url('assests/profilepetdark.png')]">
