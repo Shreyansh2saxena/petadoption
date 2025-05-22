@@ -11,6 +11,7 @@ import Postform from './feed/Postform';
 import Profile from './profile/Profile';
 import Home from './component/Home';
 import Donate from './adopt/Donate';
+import Chatbot from './component/Chatbot';
 import PrivateRoute from './authpage/Privateroute';
 
 function App() {
@@ -68,6 +69,14 @@ function App() {
           element={
             <PrivateRoute>
               <Donate />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/chatbot"
+          element={
+            <PrivateRoute>
+              <Chatbot />
             </PrivateRoute>
           }
         />
