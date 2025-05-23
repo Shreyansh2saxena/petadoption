@@ -13,6 +13,21 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:[true,'password is required']
+    },
+    city:{
+        type: String,
+        default:"Lucknow"
+    },
+    bio:{
+        type: String,
+        default: "Pet Lover"
+    },
+    profilePic:{
+        url:{
+            type: String,
+            default: "https://st3.depositphotos.com/6672868/13701/v/450/depositphotos_137014128-stock-illustration-user-profile-icon.jpg"
+        },
+        public_id:String,
     }
 },{timestamps:true})
 
