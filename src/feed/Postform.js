@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Lottie from "lottie-react";
 import animation from "../assests/Animation - 1744618965062.json";
+import axios from 'axios';
 
 export default function PostPetPage() {
   const [newPost, setNewPost] = useState({
@@ -13,6 +14,7 @@ export default function PostPetPage() {
   });
   const [imagePreview, setImagePreview] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const userId = localStorage.getItem('userId');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -33,32 +35,53 @@ export default function PostPetPage() {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (
-      newPost.name &&
-      newPost.city &&
-      newPost.image &&
-      newPost.age &&
-      newPost.breed &&
-      newPost.description
-    ) {
-      setIsLoading(true);
-      setTimeout(() => {
-        alert("Pet Posted!");
+
+const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  const { name, city, age, breed, description, image } = newPost;
+
+  if (name && city && image && age && breed && description) {
+    setIsLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('city', city);
+      formData.append('age', age);
+      formData.append('breed', breed);
+      formData.append('description', description);
+      formData.append('image', image); // file object
+
+      const response = await axios.post(`http://localhost:5000/api/pet/addPet/${userId}`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (response.data.success) {
+        alert('Pet Posted!');
         setNewPost({
-          name: "",
-          city: "",
-          image: "",
-          age: "",
-          breed: "",
-          description: "",
+          name: '',
+          city: '',
+          image: '',
+          age: '',
+          breed: '',
+          description: '',
         });
         setImagePreview(null);
-        setIsLoading(false);
-      }, 1500); // simulate async post
+      } else {
+        alert('Failed to post pet');
+      }
+    } catch (error) {
+      console.error('Error uploading pet:', error);
+      alert('Something went wrong. Try again.');
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }
+};
+
   
 
   return (

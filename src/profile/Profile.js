@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 const initialUser = {
   name: "shreyansh",
   city: "Mumbai",
@@ -8,32 +8,6 @@ const initialUser = {
     "https://images.unsplash.com/photo-1603415526960-f7e0328c9a4b?auto=format&fit=crop&w=300&q=60",
 };
 
-const userPosts = [
-  {
-    id: 1,
-    name: "Bella",
-    city: "Mumbai",
-    likes: 24,
-    image:
-      "https://images.unsplash.com/photo-1601758123927-196d5f1a1a1e?auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    id: 2,
-    name: "Max",
-    city: "Delhi",
-    likes: 12,
-    image:
-      "https://images.unsplash.com/photo-1583337130417-3346a1c123d6?auto=format&fit=crop&w=500&q=60",
-  },
-  {
-    id: 3,
-    name: "Luna",
-    city: "Bangalore",
-    likes: 37,
-    image:
-      "https://images.unsplash.com/photo-1574158622682-e40e69881006?auto=format&fit=crop&w=500&q=60",
-  },
-];
 
 const userContributions = [
   {
@@ -58,7 +32,8 @@ const userContributions = [
 export default function UserProfilePage() {
   const [user, setUser] = useState(initialUser);
   const [editMode, setEditMode] = useState(false);
-
+  const [userPosts, setUserPosts] = useState([]);
+  const userId = localStorage.getItem('userId');
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
@@ -74,6 +49,24 @@ export default function UserProfilePage() {
       reader.readAsDataURL(file);
     }
   };
+
+  const fetchUserPets = async () => {
+  try {
+    const res = await axios.get(`http://localhost:5000/api/pet/getAllPets/${userId}`);
+    if(res.data.success){
+      setUserPosts(res.data.pets);
+    }
+    
+    console.log(res.data.pets); // render on UI
+  } catch (error) {
+    console.error('Error fetching user pets:', error.response?.data?.message || error.message);
+  }
+};
+
+useEffect(() => {
+  fetchUserPets();
+}, [])
+
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-black dark:text-white py-6 px-4 transition-colors">
@@ -151,11 +144,11 @@ export default function UserProfilePage() {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {userPosts.map((post) => (
             <div
-              key={post.id}
+              key={post._id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden"
             >
               <img
-                src={post.image}
+                src={post.image.url}
                 alt={post.name}
                 className="w-full h-56 object-cover"
               />
@@ -163,7 +156,7 @@ export default function UserProfilePage() {
                 <h4 className="text-lg font-semibold">{post.name}</h4>
                 <p className="text-sm text-gray-500 dark:text-gray-300">{post.city}</p>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  ❤️ {post.likes} likes
+                  ❤️ {post.like} likes
                 </div>
               </div>
             </div>
