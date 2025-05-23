@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
-const initialUser = {
-  name: "shreyansh",
-  city: "Mumbai",
-  bio: "Animal lover 🐾 | Looking to help pets find a home 🏡",
-  profilePic:
-    "https://images.unsplash.com/photo-1603415526960-f7e0328c9a4b?auto=format&fit=crop&w=300&q=60",
-};
+// const initialUser = {
+//   name: "shreyansh",
+//   city: "Mumbai",
+//   bio: "Animal lover 🐾 | Looking to help pets find a home 🏡",
+//   profilePic:
+//     "https://images.unsplash.com/photo-1603415526960-f7e0328c9a4b?auto=format&fit=crop&w=300&q=60",
+// };
 
 
 const userContributions = [
@@ -30,26 +30,62 @@ const userContributions = [
 ];
 
 export default function UserProfilePage() {
-  const [user, setUser] = useState(initialUser);
+  const [user, setUser] = useState();
   const [editMode, setEditMode] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
+  const [selectedImage, setSelectedImage] = useState();
   const userId = localStorage.getItem('userId');
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUser((prev) => ({ ...prev, [name]: value }));
   };
 
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       setUser((prev) => ({ ...prev, profilePic: reader.result }));
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // };
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setUser((prev) => ({ ...prev, profilePic: reader.result }));
-      };
-      reader.readAsDataURL(file);
+  const file = e.target.files[0];
+  if (file) {
+    setSelectedImage(file); // Save for FormData
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setUser((prev) => ({ ...prev, profilePic: { url: reader.result } }));
+    };
+    reader.readAsDataURL(file);
+  }
+};
+  const handleProfileUpdate = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("name", user.name);
+    formData.append("city", user.city);
+    formData.append("bio", user.bio);
+    if (selectedImage) {
+      formData.append("image", selectedImage);
     }
-  };
-
+    console.log('formData--->', formData);
+    const res = await axios.put(`http://localhost:5000/api/user/updateUser/${userId}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    console.log('res data--->',res.data);
+    if (res.data.success) {
+      setEditMode(false);
+      setUser(res.data.updatedUser);  
+      getUserDetail();
+      alert("Profile updated successfully");
+    }
+  } catch (error) {
+    console.error("Failed to update profile:", error.response?.data?.message || error.message);
+    alert("Update failed");
+  }
+};
   const fetchUserPets = async () => {
   try {
     const res = await axios.get(`http://localhost:5000/api/pet/getAllPets/${userId}`);
@@ -63,9 +99,21 @@ export default function UserProfilePage() {
   }
 };
 
+const getUserDetail = async () => {
+  try {
+    const res = await axios.get(`http://localhost:5000/api/user/userDetails/${userId}`);
+    console.log('User details:', res.data.user);
+    setUser(res.data.user)
+  } catch (error) {
+    console.error('Failed to fetch user:', error.response?.data?.message || error.message);
+    return null;
+  }
+}
+
 useEffect(() => {
   fetchUserPets();
-}, [])
+  getUserDetail();
+},[])
 
 
   return (
@@ -74,8 +122,8 @@ useEffect(() => {
       <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-2xl shadow p-6 mb-8">
         <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
           <img
-            src={user.profilePic}
-            alt={user.name}
+            src={user?.profilePic?.url}
+            alt={user?.name}
             className="w-32 h-32 object-cover rounded-full border-4 border-blue-500"
           />
           <div className="text-center md:text-left space-y-2 flex-1">
@@ -84,7 +132,7 @@ useEffect(() => {
                 <input
                   type="text"
                   name="name"
-                  value={user.name}
+                  value={user?.name}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Name"
@@ -92,14 +140,14 @@ useEffect(() => {
                 <input
                   type="text"
                   name="city"
-                  value={user.city}
+                  value={user?.city}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="City"
                 />
                 <textarea
                   name="bio"
-                  value={user.bio}
+                  value={user?.bio}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                   placeholder="Bio"
@@ -111,7 +159,8 @@ useEffect(() => {
                   className="text-sm"
                 />
                 <button
-                  onClick={() => setEditMode(false)}
+                  // onClick={() => setEditMode(false)}
+                  onClick={handleProfileUpdate}
                   className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
                 >
                   Save
@@ -119,11 +168,11 @@ useEffect(() => {
               </div>
             ) : (
               <>
-                <h2 className="text-2xl font-semibold">{user.name}</h2>
-                <p className="text-gray-500 dark:text-gray-300">{user.city}</p>
-                <p className="text-gray-700 dark:text-gray-200">{user.bio}</p>
+                <h2 className="text-2xl font-semibold">{user?.name}</h2>
+                <p className="text-gray-500 dark:text-gray-300">{user?.city}</p>
+                <p className="text-gray-700 dark:text-gray-200">{user?.bio}</p>
                 <div className="flex gap-6 justify-center md:justify-start pt-2">
-                  <span className="font-semibold">{userPosts.length}</span>
+                  <span className="font-semibold">{userPosts?.length}</span>
                   <span className="text-gray-500 dark:text-gray-400">Posts</span>
                 </div>
                 <button

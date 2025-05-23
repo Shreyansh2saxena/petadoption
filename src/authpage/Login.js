@@ -33,6 +33,7 @@ const LoginPage = () => {
       // Save token (if returned)
       localStorage.setItem('jwtToken', token);
       localStorage.setItem('userName', user.name); // optional
+      localStorage.setItem('userId', user.id);
 
       navigate('/');
     } else {

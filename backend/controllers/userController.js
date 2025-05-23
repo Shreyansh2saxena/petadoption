@@ -1,6 +1,11 @@
 import User from '../models/userModel.js'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import fs from 'fs'
+import cloudinary from '../utils/cloudinary.js';
+import streamifier from 'streamifier';
+
+
 
 export const loginController = async (req, res) => {
   const { email, password } = req.body;
@@ -71,5 +76,73 @@ export const signUpController = async (req, res) => {
       success: false,
       message: "Internal server error",
     });
+  }
+};
+
+export const getUserDetails = async (req, res) => {
+  const {userId} = req.params;
+  console.log('User id--->', userId);
+  if(!userId) return res.status(400).json({message:"Please Provide userId", success:false});
+  try {
+    const user = await User.findById(userId).select('-password');
+    console.log('user--->', user);
+    if(user){
+      return res.status(200).json({message:"User Details", success:true, user})
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+}
+
+export const updateUserController = async (req, res) => {
+  try {
+    const { name, city, bio } = req.body;
+    console.log('Request body-->', req.body);
+    const { userId } = req.params;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    let updateFields = { name, city, bio };
+
+    if (req.file) {
+      if (user.profilePic?.public_id) {
+        await cloudinary.uploader.destroy(user.profilePic.public_id);
+      }
+
+      const uploadStreamToCloudinary = (fileBuffer) => {
+        return new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: "user_profiles" },
+            (error, result) => {
+              if (result) resolve(result);
+              else reject(error);
+            }
+          );
+          streamifier.createReadStream(fileBuffer).pipe(stream);
+        });
+      };
+
+      const uploadResult = await uploadStreamToCloudinary(req.file.buffer);
+      updateFields.profilePic = {
+        url: uploadResult.secure_url,
+        public_id: uploadResult.public_id,
+      };
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateFields },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Update user error:", error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
