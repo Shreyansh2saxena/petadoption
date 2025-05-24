@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation  } from 'react-router-dom';
 import { Sun, Moon } from 'lucide-react'; // we'll use lucide-react for icons
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem('theme') === 'dark'
   );
   const isUser = localStorage.getItem('userId');
-useEffect(() => {
-    if (!isUser) {
-      // Remove any leftover data just in case
+  useEffect(() => {
+    if (!isUser && location.pathname !== "/login" && location.pathname !== "/signup") {
       localStorage.removeItem("userId");
       localStorage.removeItem("jwtToken");
       localStorage.removeItem("theme");
       localStorage.removeItem("userName");
       navigate("/login");
     }
-  }, [isUser, navigate]);
+  }, [isUser, location, navigate]);
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
