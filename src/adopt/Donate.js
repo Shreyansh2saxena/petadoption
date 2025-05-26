@@ -45,11 +45,11 @@ const Donate = () => {
 
     return (
         <div>
-            <div className="min-h-screen  dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-10">
+            <div className="min-h-screen  dark:bg-gray-600 text-gray-900 dark:text-gray-100 py-10 bg-cover bg-center bg-no-repeat bg-[url('assests/profilepet.png')] dark:bg-[url('assests/profilepetdark.png')]">
 
                 <h1 className="text-4xl font-extrabold text-center mb-10">Donate to Help Pets in Need </h1>
 
-                <form onSubmit={hsubmit} className="relative max-w-lg mx-auto p-8 bg-white dark:bg-gray-900    space-y-6 overflow-hidden">
+                <form onSubmit={hsubmit} className="relative max-w-lg mx-auto p-8 bg-white dark:bg-gray-700 bg-opacity-20 dark:bg-opacity-20 rounded-lg  space-y-6 overflow-hidden">
 
                     {/* Name */}
                     <div>
@@ -59,7 +59,7 @@ const Donate = () => {
                             type="text"
                             id="name"
                             name="name"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none opacity-30 dark:opacity-30 focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
@@ -72,7 +72,7 @@ const Donate = () => {
                             type="number"
                             id="age"
                             name="age"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none opacity-30 dark:opacity-30 focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
@@ -85,7 +85,7 @@ const Donate = () => {
                             type="text"
                             id="breed"
                             name="breed"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none opacity-30 dark:opacity-30 focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
@@ -98,7 +98,7 @@ const Donate = () => {
                             type="text"
                             id="type"
                             name="type"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none opacity-30 dark:opacity-30 focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
@@ -112,7 +112,7 @@ const Donate = () => {
                             id="photo"
                             name="photo"
                             accept="image/*"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none opacity-30 dark:opacity-30 focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
@@ -125,7 +125,7 @@ const Donate = () => {
                             type="file"
                             id="medicalCertificate"
                             name="medicalCertificate"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 opacity-30 dark:opacity-30 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
