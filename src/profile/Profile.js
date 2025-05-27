@@ -113,14 +113,14 @@ const getUserDetail = async () => {
 
 const fetchUserContributions = async () => {
 
-  // try {
+  try {
     const response = await axios.get(`http://localhost:5000/api/donate/donatedPet/${userId}`);
     if (response.data.success) {
       setUserContributions(response.data.pets);
     }
-  // }catch (err) {
-  //    console.log('Error',err);
-  // } 
+  }catch (err) {
+     console.log('Error',err);
+  } 
 }
 useEffect(() => {
   fetchUserPets();
@@ -206,19 +206,19 @@ useEffect(() => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
           {userPosts.map((post) => (
             <div
-              key={post._id}
+              key={post?._id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow overflow-hidden"
             >
               <img
-                src={post.image.url}
-                alt={post.name}
+                src={post?.image?.url}
+                alt={post?.name}
                 className="w-full h-56 object-cover"
               />
               <div className="p-4">
-                <h4 className="text-lg font-semibold">{post.name}</h4>
-                <p className="text-sm text-gray-500 dark:text-gray-300">{post.city}</p>
+                <h4 className="text-lg font-semibold">{post?.name}</h4>
+                <p className="text-sm text-gray-500 dark:text-gray-300">{post?.city}</p>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  ❤️ {post.like} likes
+                  ❤️ {post?.like} likes
                 </div>
               </div>
             </div>
@@ -230,7 +230,7 @@ useEffect(() => {
       <div className="max-w-4xl mx-auto mb-10">
         <h3 className="text-xl font-semibold mb-4">My Contributions</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {userContributions.map((item) => (
+          {userContributions?.map((item) => (
             <div
               key={item?.id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow flex flex-col overflow-hidden"
@@ -242,7 +242,7 @@ useEffect(() => {
               />
               <div className="p-4">
                 <div className="flex justify-between items-center mb-2">
-                  <h4 className="text-lg font-semibold">{item.name}</h4>
+                  <h4 className="text-lg font-semibold">{item?.name}</h4>
                   <span
                     className={`text-xs font-bold px-2 py-1 rounded ${
                       item.type === "Adopted"
@@ -250,11 +250,11 @@ useEffect(() => {
                         : "bg-yellow-100 text-yellow-600 dark:bg-yellow-800 dark:text-yellow-300"
                     }`}
                   >
-                    {item.type}
+                    {item?.type}
                   </span>
                 </div>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
-                  {item.description}
+                  {item?.description}
                 </p>
               </div>
             </div>
