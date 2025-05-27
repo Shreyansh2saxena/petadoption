@@ -1,29 +1,32 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 // Example pet data (normally this would come from your backend)
-const availablePets = [
-  {
-    id: 1,
-    name: "Buddy",
-    image:
-      "https://images.unsplash.com/photo-1618817171250-3dbbe6c59dfb?auto=format&fit=crop&w=500&q=60",
-    city: "Mumbai",
-    ownerEmail: "john@example.com",
-  },
-  {
-    id: 2,
-    name: "Milo",
-    image:
-      "https://images.unsplash.com/photo-1601758124380-9b67d903ac8a?auto=format&fit=crop&w=500&q=60",
-    city: "Delhi",
-    ownerEmail: "jane@example.com",
-  },
-];
+// const availablePets = [
+//   {
+//     id: 1,
+//     name: "Buddy",
+//     image:
+//       "https://images.unsplash.com/photo-1618817171250-3dbbe6c59dfb?auto=format&fit=crop&w=500&q=60",
+//     city: "Mumbai",
+//     ownerEmail: "john@example.com",
+//   },
+//   {
+//     id: 2,
+//     name: "Milo",
+//     image:
+//       "https://images.unsplash.com/photo-1601758124380-9b67d903ac8a?auto=format&fit=crop&w=500&q=60",
+//     city: "Delhi",
+//     ownerEmail: "jane@example.com",
+//   },
+// ];
 
 export default function AdoptPage() {
   const [selectedPet, setSelectedPet] = useState(null);
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [confirmation, setConfirmation] = useState("");
+  const [availablePets, setAvailablePets] = useState([]);
+  const userId = localStorage.getItem('userId');
 
   const handleAdoptClick = (pet) => {
     setSelectedPet(pet);
@@ -52,6 +55,21 @@ export default function AdoptPage() {
     setSelectedPet(null);
   };
 
+  const fetchAdoptList = async () => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/donate/adoptablePets/${userId}`);
+      if (response.data.success) {
+        setAvailablePets(response.data.pets);
+      } 
+    } catch (err) {
+       console.log(err);
+    }
+  }
+
+  useEffect(()=>{
+    fetchAdoptList();
+  })
+
   return (
     <div className="min-h-screen bg-gray-50 py-6 px-4">
       <h2 className="text-2xl font-bold mb-6 text-center">Pets for Adoption 🐶</h2>
@@ -63,7 +81,7 @@ export default function AdoptPage() {
             className="bg-white rounded-xl shadow-md overflow-hidden"
           >
             <img
-              src={pet.image}
+              src={pet?.image?.url}
               alt={pet.name}
               className="w-full h-56 object-cover"
             />
