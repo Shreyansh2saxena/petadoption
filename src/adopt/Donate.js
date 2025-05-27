@@ -77,7 +77,7 @@ const Donate = () => {
 
         try {
             const userId = localStorage.getItem('userId');
-            const response = await axios.post(`http://localhost:5000/api/donate/${userId}`, data, {
+            const response = await axios.post(`http://localhost:5000/api/donate/pet/${userId}`, data, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -1,6 +1,16 @@
 import PetDonate from '../models/petDonateModel.js';
 import cloudinary from '../utils/cloudinary.js';
 import streamifier from 'streamifier';
+import nodemailer from 'nodemailer'
+import {AdoptionRequestHTML} from '../template/AdoptionRequestHTML.js'
+
+const transporter = nodemailer.createTransport({
+  service: process.env.SMPT_SERVICE,
+  auth: {
+    user: process.env.SMPT_MAIL,       // replace with your email
+    pass: process.env.SMPT_PASSWORD           // use app password if using Gmail
+  }
+});
 
 export const donatePet = async (req, res) => {
   try {
@@ -95,3 +105,29 @@ export const getOtherDonatedPets = async (req, res) => {
     res.status(500).json({ error: 'Internal server error', success: false });
   }
 };
+
+export const sendMailToPetOwner = async (req, res) => {
+  const {ownerName, ownerEmail, petName, adopterName, message, adopterEmail } = req.body;
+  console.log("Request---->", req.body);
+  const ownerFirstName = ownerName.split(' ')[0];
+  const emailContent = AdoptionRequestHTML(ownerFirstName, adopterName, adopterEmail, message, petName);
+  if (!ownerEmail || !petName || !adopterName) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const mailOptions = {
+    from: process.env.SMPT_MAIL,
+    to: ownerEmail,
+    subject: `Someone wants to adopt ${petName}!`,
+    html: emailContent
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ message: "Adoption email sent successfully" });
+  } catch (error) {
+    console.error("Error sending email:", error);
+    res.status(500).json({ error: "Failed to send email" });
+  }
+};
+
