@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Lottie from "lottie-react";
-import animation from '../assests/Animation - 1744618965062.json'; // Import your animation file
+import animation from '../assests/Animation - 1744618965062.json'; 
 import axios from 'axios';
 
 const LoginPage = () => {
@@ -30,9 +30,9 @@ const LoginPage = () => {
     if (response.data.success) {
       const { token, user } = response.data;
 
-      // Save token (if returned)
+     
       localStorage.setItem('jwtToken', token);
-      localStorage.setItem('userName', user.name); // optional
+      localStorage.setItem('userName', user.name); 
       localStorage.setItem('userId', user.id);
 
       navigate('/');
