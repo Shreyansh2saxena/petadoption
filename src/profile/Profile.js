@@ -9,31 +9,32 @@ import axios from 'axios';
 // };
 
 
-const userContributions = [
-  {
-    id: 101,
-    type: "Adopted",
-    name: "Oscar",
-    image:
-      "https://images.unsplash.com/photo-1583511655826-b53cdd8bd07c?auto=format&fit=crop&w=500&q=60",
-    description: "Adopted Oscar in Feb 2024. He's now part of the family!",
-  },
-  {
-    id: 102,
-    type: "Donated",
-    name: "Shelter Paws",
-    image:
-      "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=500&q=60",
-    description:
-      "Donated to Shelter Paws for food and vaccination support in May 2024.",
-  },
-];
+// const userContributions = [
+//   {
+//     id: 101,
+//     type: "Adopted",
+//     name: "Oscar",
+//     image:
+//       "https://images.unsplash.com/photo-1583511655826-b53cdd8bd07c?auto=format&fit=crop&w=500&q=60",
+//     description: "Adopted Oscar in Feb 2024. He's now part of the family!",
+//   },
+//   {
+//     id: 102,
+//     type: "Donated",
+//     name: "Shelter Paws",
+//     image:
+//       "https://images.unsplash.com/photo-1560807707-8cc77767d783?auto=format&fit=crop&w=500&q=60",
+//     description:
+//       "Donated to Shelter Paws for food and vaccination support in May 2024.",
+//   },
+// ];
 
 export default function UserProfilePage() {
   const [user, setUser] = useState();
   const [editMode, setEditMode] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
   const [selectedImage, setSelectedImage] = useState();
+  const [userContributions, setUserContributions] = useState([]);
   const userId = localStorage.getItem('userId');
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -110,9 +111,21 @@ const getUserDetail = async () => {
   }
 }
 
+const fetchUserContributions = async () => {
+
+  // try {
+    const response = await axios.get(`http://localhost:5000/api/donate/donatedPet/${userId}`);
+    if (response.data.success) {
+      setUserContributions(response.data.pets);
+    }
+  // }catch (err) {
+  //    console.log('Error',err);
+  // } 
+}
 useEffect(() => {
   fetchUserPets();
   getUserDetail();
+  fetchUserContributions();
 },[])
 
 
@@ -219,12 +232,12 @@ useEffect(() => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {userContributions.map((item) => (
             <div
-              key={item.id}
+              key={item?.id}
               className="bg-white dark:bg-gray-800 rounded-xl shadow flex flex-col overflow-hidden"
             >
               <img
-                src={item.image}
-                alt={item.name}
+                src={item?.image?.url}
+                alt={item?.name}
                 className="w-full h-48 object-cover"
               />
               <div className="p-4">

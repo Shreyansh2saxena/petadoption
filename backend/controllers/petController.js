@@ -68,3 +68,53 @@ export const getAllPets = async(req, res) => {
     return res.status(500).json({error, message:"Internal Server Error", success:false});
   }
 }
+
+export const getUserFeed = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const pets = await Pet.find({ user: { $ne: userId } })
+      .sort({ createdAt: -1 }) 
+      .populate('user', 'name')
+      .lean();
+
+    res.status(200).json({
+      success: true,
+      pets,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Failed to load feed',
+      error: error.message,
+    });
+  }
+};
+
+
+export const toggleLikePet = async (req, res) => {
+  try {
+    const { petId, userId } = req.query;
+
+    const pet = await Pet.findById(petId);
+
+    if (!pet) return res.status(404).json({ success: false, message: 'Pet not found' });
+
+    const alreadyLiked = pet.likes.includes(userId);
+
+    if (alreadyLiked) {
+      pet.likes = pet.likes.filter(id => id.toString() !== userId);
+    } else {
+      pet.likes.push(userId);
+    }
+
+    await pet.save();
+
+    res.status(200).json({
+      success: true,
+      message: alreadyLiked ? 'Unliked the pet' : 'Liked the pet',
+      likes: pet.likes.length,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Failed to toggle like', error: error.message });
+  }
+};
