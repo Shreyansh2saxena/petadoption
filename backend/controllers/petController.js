@@ -112,7 +112,7 @@ export const toggleLikePet = async (req, res) => {
     res.status(200).json({
       success: true,
       message: alreadyLiked ? 'Unliked the pet' : 'Liked the pet',
-      likes: pet.likes.length,
+      likes: pet.likes
     });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to toggle like', error: error.message });
