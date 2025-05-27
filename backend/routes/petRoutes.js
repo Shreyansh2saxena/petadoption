@@ -8,6 +8,6 @@ const router = express.Router();
 router.post('/addPet/:userId', upload.single('image'), createPet);
 router.get('/getAllPets/:userId', getAllPets);
 router.get('/feed/:userId', getUserFeed );
-router.post('/like/:petId', toggleLikePet);
+router.post('/like', toggleLikePet);
 
 export default router;
