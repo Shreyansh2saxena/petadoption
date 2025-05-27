@@ -116,6 +116,7 @@ const Donate = () => {
                             name="name"
                             value={formData.name}
                             className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+
                             required
                         />
                     </div>
@@ -130,6 +131,7 @@ const Donate = () => {
                             name="age"
                             value={formData.age}
                             className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+
                             required
                         />
                     </div>
@@ -144,6 +146,7 @@ const Donate = () => {
                             name="breed"
                             value={formData.breed}
                             className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+
                             required
                         />
                     </div>
@@ -158,6 +161,7 @@ const Donate = () => {
                             name="type"
                             value={formData.type}
                             className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+
                             required
                         />
                     </div>
@@ -171,12 +175,13 @@ const Donate = () => {
                             id="photo"
                             name="image"
                             accept="image/*"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none opacity-30 dark:opacity-30 focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
                     {error && <p className="text-red-500 text-center">{error}</p>}
                     {success && <p className="text-green-500 text-center">{success}</p>}
+
                     <div className="text-center">
                         <button
                             type="submit"
