@@ -131,3 +131,26 @@ export const sendMailToPetOwner = async (req, res) => {
   }
 };
 
+export const searchPets =  async (req, res) => {
+  try {
+    const { city, breed } = req.body;
+    console.log(req.body);
+    // Build dynamic filter object
+    const filter = {};
+    if (breed) filter.breed = breed;
+
+    // First, find pets with the given breed (or all if no breed)
+    const pets = await PetDonate.find(filter).populate("user");
+
+    // Then filter by user.city if provided
+    const filteredPets = city
+      ? pets.filter((pet) => pet.user?.city?.toLowerCase() === city.toLowerCase())
+      : pets;
+
+    res.status(200).json({ success: true, data: filteredPets });
+  } catch (error) {
+    console.error("Error fetching pets:", error);
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+};
+
