@@ -101,12 +101,12 @@ const Donate = () => {
 
     return (
         <div>
-            <div className="min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-10">
+            <div className="min-h-screen dark:bg-gray-900 text-gray-900 dark:text-gray-100 py-10 bg-no-repeat bg-[url('assests/profilepet.png')] dark:bg-[url('assests/profilepetdark.png')] bg-cover">
                 <h1 className="text-4xl font-extrabold text-center mb-10">Donate to Help Pets in Need</h1>
 
-                <form onSubmit={handleSubmit} className="relative max-w-lg mx-auto p-8 bg-white dark:bg-gray-900 space-y-6 overflow-hidden">
+                <form onSubmit={handleSubmit} className="relative max-w-lg mx-auto opacity-30 dark:opacity-30 p-8 bg-white dark:bg-gray-900 space-y-6 overflow-hidden">
                     <div>
-                        <label className="block text-lg font-semibold mb-1" htmlFor="name">
+                        <label className="block text-lg font-semibold mb-1 text-gray-700 dark:text-gray-100" htmlFor="name">
                             Name:
                         </label>
                         <input
@@ -115,7 +115,7 @@ const Donate = () => {
                             id="name"
                             name="name"
                             value={formData.name}
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
 
                             required
                         />
@@ -130,7 +130,7 @@ const Donate = () => {
                             id="age"
                             name="age"
                             value={formData.age}
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
 
                             required
                         />
@@ -145,7 +145,7 @@ const Donate = () => {
                             id="breed"
                             name="breed"
                             value={formData.breed}
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
 
                             required
                         />
@@ -160,7 +160,7 @@ const Donate = () => {
                             id="type"
                             name="type"
                             value={formData.type}
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none focus:ring-2 focus:ring-blue-500"
 
                             required
                         />
@@ -175,7 +175,7 @@ const Donate = () => {
                             id="photo"
                             name="image"
                             accept="image/*"
-                            className="border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none opacity-30 dark:opacity-30 focus:ring-2 focus:ring-blue-500"
+                            className="border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-md p-3 w-full focus:outline-none  focus:ring-2 focus:ring-blue-500"
                             required
                         />
                     </div>
@@ -185,7 +185,7 @@ const Donate = () => {
                     <div className="text-center">
                         <button
                             type="submit"
-                            className="relative flex items-center justify-center bg-green-600 text-white rounded-full text-base w-24 h-10"
+                            className="relative flex items-center justify-center bg-green-600 text-white rounded-full text-base w-1/2 h-10 disabled:opacity-90 mx-auto"
                             disabled={isLoading}
                         >
                             {isLoading ? (

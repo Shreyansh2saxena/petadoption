@@ -80,19 +80,19 @@ export default function AdoptPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-6 px-4">
-      <h2 className="text-2xl font-bold mb-6 text-center">Pets for Adoption 🐶</h2>
+    <div className="min-h-screen bg-gray-50 py-6 px-4 dark:bg-gray-900">
+      <h2 className="text-2xl font-bold mb-6 text-center dark:text-white">Pets for Adoption 🐶</h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
         {availablePets.map((pet) => (
-          <div key={pet._id} className="bg-white rounded-xl shadow-md overflow-hidden">
+          <div key={pet._id} className="bg-white rounded-xl shadow-md overflow-hidden dark:bg-gray-800">
             <img
               src={pet?.image?.url}
               alt={pet.name}
               className="w-full h-56 object-cover"
             />
             <div className="p-4">
-              <h3 className="text-xl font-semibold">{pet.name}</h3>
+              <h3 className="text-xl font-semibold dark:text-white">{pet.name}</h3>
               <p className="text-gray-500">{pet.city}</p>
               <button
                 className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
@@ -107,7 +107,7 @@ export default function AdoptPage() {
 
       {/* Adoption Form Modal */}
       {selectedPet && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center dark:bg-grey-400 backdrop:blur-md justify-center z-50">
           <div className="bg-white rounded-xl p-6 w-full max-w-md shadow-xl">
             <h3 className="text-lg font-bold mb-4">Adopt {selectedPet.name}</h3>
             <input
