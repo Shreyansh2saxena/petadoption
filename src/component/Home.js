@@ -8,9 +8,9 @@ function Home() {
     city: "",
     breed: "",
     pet: "",
-    name: "", // Added for modal form
-    email: "", // Added for modal form
-    message: "", // Added for modal form
+    name: "", 
+    email: "", 
+    message: "", 
   });
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
@@ -437,98 +437,94 @@ function Home() {
       />
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-6">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <h1 className="text-3xl font-bold text-gray-800">Pet Adoption Assistant</h1>
-              </div>
-              <p className="text-gray-600">Your friendly guide to pet adoption and care! Ask me anything about pets.</p>
+       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div className="max-w-4xl mx-auto">
+    <div className="bg-white dark:bg-gray-900 rounded-lg shadow-xl overflow-hidden">
+      <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4">
+        <div className="flex items-center gap-2">
+          <MessageCircle className="w-6 h-6" />
+          <span className="font-semibold">Chat here</span>
+          <div className="ml-auto flex items-center gap-1">
+            <button className="hover:text-red-400" onClick={() => setIsOpen(false)}>close</button>
+          </div>
+        </div>
+      </div>
+
+      <div className="h-96 overflow-y-auto p-4 space-y-4 bg-gray-50 dark:bg-gray-800">
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+          >
+            <div
+              className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.sender === 'user'
+                ? 'bg-purple-600 text-white'
+                : 'bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow-md border dark:border-gray-600'
+              }`}
+            >
+              <p className="text-sm whitespace-pre-wrap">{message.text}</p>
+              <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-purple-200' : 'text-gray-500 dark:text-gray-400'}`}>
+                {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </p>
             </div>
-            <div className="bg-white rounded-lg shadow-xl overflow-hidden">
-              <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white p-4">
-                <div className="flex items-center gap-2">
-                  <MessageCircle className="w-6 h-6" />
-                  <span className="font-semibold">Chat here</span>
-                  <div className="ml-auto flex items-center gap-1">
-                    <button className="hover:text-red-400" onClick={() => setIsOpen(false)}>close</button>
-                  </div>
-                </div>
-              </div>
-              <div className="h-96 overflow-y-auto p-4 space-y-4 bg-gray-50">
-                {messages.map((message) => (
-                  <div
-                    key={message.id}
-                    className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-                  >
+          </div>
+        ))}
 
-
-                    <div
-                      className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${message.sender === 'user'
-                          ? 'bg-purple-600 text-white'
-                          : 'bg-white text-gray-800 shadow-md border'
-                        }`}
-                    >
-                      <p className="text-sm whitespace-pre-wrap">{message.text}</p>
-                      <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-purple-200' : 'text-gray-500'
-                        }`}>
-                        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-                {isLoading && (
-                  <div className="flex justify-start">
-                    <div className="bg-white text-gray-800 shadow-md border rounded-lg px-4 py-2">
-                      <div className="flex items-center space-x-1">
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-                <div ref={messagesEndRef} />
-              </div>
-              <div className="p-4 bg-white border-t">
-                <p className="text-sm text-gray-600 mb-2">Quick questions:</p>
-                <div className="flex flex-wrap gap-2">
-                  {quickQuestions.map((question, index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleQuickQuestion(question)}
-                      className="text-xs закончился bg-purple-100 text-purple-700 px-3 py-1 rounded-full hover:bg-purple-200 transition-colors"
-                    >
-                      {question}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <div className="p-4 bg-white border-t">
-                <div className="flex items-end gap-2">
-                  <div className="flex-1">
-                    <textarea
-                      value={inputMessage}
-                      onChange={(e) => setInputMessage(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      placeholder="Ask me about pet adoption, care, breeds, training, or anything pet-related..."
-                      className="w-full px-2 py-2 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-                      rows={2}
-                      disabled={isLoading}
-                    />
-                  </div>
-                  <button
-                    onClick={handleSendMessage}
-                    disabled={!inputMessage.trim() || isLoading}
-                    className="text-white p-2 rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-2"
-                  >
-                    <PawPrint className="w-8 h-8 text-purple-900" />
-                  </button>
-                </div>
+        {isLoading && (
+          <div className="flex justify-start">
+            <div className="bg-white dark:bg-gray-700 text-gray-800 dark:text-gray-100 shadow-md border rounded-lg px-4 py-2">
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
               </div>
             </div>
           </div>
+        )}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="p-4 bg-white dark:bg-gray-900 border-t dark:border-gray-700">
+        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">Quick questions:</p>
+        <div className="flex flex-wrap gap-2">
+          {quickQuestions.map((question, index) => (
+            <button
+              key={index}
+              onClick={() => handleQuickQuestion(question)}
+              className="text-xs bg-purple-100 dark:bg-purple-800 text-purple-700 dark:text-purple-200 px-3 py-1 rounded-full hover:bg-purple-200 dark:hover:bg-purple-700 transition-colors"
+            >
+              {question}
+            </button>
+          ))}
         </div>
+      </div>
+
+      <div className="p-4 bg-white dark:bg-gray-900 border-t dark:border-gray-700">
+        <div className="flex items-end gap-2">
+          <div className="flex-1">
+            <textarea
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask me about pet adoption, care, breeds, training, or anything pet-related..."
+              className="w-full px-2 py-2 border border-gray-300 dark:border-gray-600 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+              rows={2}
+              disabled={isLoading}
+            />
+          </div>
+          <button
+            onClick={handleSendMessage}
+            disabled={!inputMessage.trim() || isLoading}
+            className="text-white p-2 rounded-lg hover:bg-purple-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-2"
+          >
+            <PawPrint className="w-8 h-8 text-purple-900" />
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
       )}
     </div>
   );
